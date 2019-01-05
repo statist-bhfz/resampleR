@@ -2,30 +2,36 @@
 % Please edit documentation in R/k_fold.R
 \name{cv_split_group_kfold}
 \alias{cv_split_group_kfold}
-\title{Функция генерирует таблицу с K разбивками на обучающую и
-проверочную выборки для K-fold кросс-валидации}
+\title{Resamples for group K-fold cross-validation with stratification by target variable.}
 \usage{
-cv_split_group_kfold(data, nfolds = 5, y = "totals.transactionRevenue",
-  id = "fullVisitorId")
+cv_split_group_kfold(data, y, id, nfolds = 5L, probs = seq(0, 1,
+  length.out = 11))
 }
 \arguments{
-\item{data}{Объект `data.table`.}
+\item{data}{data.table with \code{y} and \code{id}.}
 
-\item{nfolds}{Количество фолдов.}
+\item{y}{Target variable name (character).}
 
-\item{y}{Имена столбцов, участвующих в генерации фолдов.}
+\item{id}{Identifier of each time series (character).}
 
-\item{id}{Идентификатор наблюдений.}
+\item{nfolds}{Number of folds (min 2, max 20).}
+
+\item{probs}{Numeric vector of probabilities with values in \emph{[0, 1]} range.}
 }
 \value{
-Объект `data.table` с K разбивками на обучающую и
-проверочную выборки для K-fold кросс-валидации
-(со стратификацией по целевой переменной)
+data.table with \code{nfolds} columns. Each column is an indicator variable
+with 1 corresponds to observations in validation dataset (stratified by target).
 }
 \description{
-Функция генерирует таблицу с K разбивками на обучающую и
-проверочную выборки для K-fold кросс-валидации
+Resamples for group K-fold cross-validation with stratification by target variable.
 }
-\note{
-Гарантирует, что наблюдения для одного пользователя всегда попадают в один фолд
+\details{
+Numeric target: quantile binning is used for stratification.
+
+Character/categorical target: resampling performs within categories.
+
+\code{probs} can be a vector like \code{c(0, seq(0.99, 1, length.out = 10))}
+for target with very skewed distribution, e.g. for financial data with 99\% of 0's.
+
+Ensures that all observations for each \code{id} will be placed in the same fold.
 }

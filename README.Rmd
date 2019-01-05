@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 # resampleR
 
-**resamplerR** is like M.Kuhn`s **rsample**, but all resamples are realised as plain data.table objects.This package aims to be as easy to extend as possible. 
+**resamplerR** is like M.Kuhn`s **rsample**, but all resamples are realised as plain data.table objects. This package aims to be as easy to extend as possible. 
 
 ## Installation
 
@@ -31,12 +31,18 @@ This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
 library(resampleR)
+
+cv_base(as.data.table(iris), "Species")
+
 dt <- data.table(
-    user = rep(1:100, each = 10),
-    date = as.POSIXct(rep(seq(1.8*10e8, 1.8*10e8 + 777600, by = 86400), 100),
+    user = rep(1:100, each = 5),
+    date = as.POSIXct(rep(seq(1.8*10e8, 1.8*10e8 + 388800, by = 86400), 100),
                       origin = "1960-01-01"),
-    target = rnorm(1e3)
+    target = rnorm(5e2)
 )
+
+cv_split_group_kfold(dt, "target", "user")
+
 cv_split_temporal(dt, "target", "user", "date")
 ```
 

@@ -2,7 +2,8 @@
 % Please edit documentation in R/k_fold.R
 \name{cv_split_temporal}
 \alias{cv_split_temporal}
-\title{Special resample strategy for K-fold cross-validation on time series data.}
+\title{Special resampling strategy for K-fold cross-validation on time series data
+with stratification by target variable.}
 \usage{
 cv_split_temporal(data, y, id, time, nfolds = 5L, probs = seq(0, 1,
   length.out = 11))
@@ -25,21 +26,30 @@ data.table with \code{nfolds} columns. Each column is an indicator variable
 with 1 corresponds to observations in validation dataset (stratified by target).
 }
 \description{
-Special resample strategy for K-fold cross-validation on time series data.
+Special resampling strategy for K-fold cross-validation on time series data
+with stratification by target variable.
 }
 \details{
+Numeric target: quantile binning is used for stratification.
+
+Character/categorical target: resampling performs within categories.
+
+\code{probs} can be a vector like \code{c(0, seq(0.99, 1, length.out = 10))}
+for target with very skewed distribution, e.g. for financial data with 99\% of 0's.
+
 When some observations from one time series fall into validation fold, train/validation
 indices for this time series will be reassigned: only last observation will be in validation fold.
 This ensures that training performs on past data and predictions are made for future observations.
+
 TODO: allow to specify arbitrary number of observations for validation set.
 }
 \examples{
 dt <- data.table(
-    user = rep(1:100, each = 10),
-    date = as.POSIXct(rep(seq(1.8*10e8, 1.8*10e8 + 777600, by = 86400), 100),
+    user = rep(1:100, each = 5),
+    date = as.POSIXct(rep(seq(1.8*10e8, 1.8*10e8 + 388800, by = 86400), 100),
                       origin = "1960-01-01"),
-    target = rnorm(1e3)
+    target = rnorm(5e2)
 )
-cv_split_temporal(dt, "target", "user", "time")
+cv_split_temporal(dt, "target", "user", "date")
 
 }
