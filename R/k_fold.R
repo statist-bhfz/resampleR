@@ -210,3 +210,41 @@ cv_split_temporal <- function(data,
 
     return(splits[, ..cn])
 }
+
+
+#' Resamples for repeated K-fold cross-validation with stratification by target variable.
+#'
+#' Creates resamples for repeated K-fold cross-validation stratified by target variable.
+#'
+#' @param nrep Number of replications.
+#' @param nfolds Number of folds (min 2, max 20). Should match the value
+#' of \code{nfolds} specified in \code{expr}.
+#' @param expr Quoted expression for creating resamples.
+#'
+#' @return data.table with \code{nrep}*\code{nfolds} columns. Each column is an indicator variable
+#' with 1 corresponds to observations in validation dataset (stratified by target).
+#'
+#' @examples
+#' repeated_kfold(expr = quote(cv_base(as.data.table(iris), "Species")))
+#'
+#' @details
+#' \code{expr} is a call of function \code{cv_base}, \code{cv_split_temporal}
+#' or other from the package.
+#'
+#' @export
+repeated_kfold <- function(nrep = 2L,
+                           nfolds = 5L,
+                           expr) {
+
+    assert_integerish(nrep)
+    assert_integerish(nfolds, lower = 2L, upper = 20L)
+
+    res <- eval(expr)
+    setnames(res, paste0("rep_", 1, paste0("_fold_", 1:nfolds)))
+    for (i in 2:nrep) {
+        cn <- paste0("rep_", i, paste0("_fold_", 1:nfolds))
+        res[, (cn) := eval(expr)]
+    }
+    return(res[])
+}
+

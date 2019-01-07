@@ -35,3 +35,11 @@ for target with very skewed distribution, e.g. for financial data with 99\% of 0
 
 Ensures that all observations for each \code{id} will be placed in the same fold.
 }
+\examples{
+dt <- data.table(
+    user = rep(1:100, each = 5),
+    target = rnorm(5e2)
+)
+cv_split_group_kfold(dt, "target", "user")
+
+}

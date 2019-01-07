@@ -3,5 +3,6 @@
 export(cv_base)
 export(cv_split_group_kfold)
 export(cv_split_temporal)
+export(repeated_kfold)
 import(checkmate)
 import(data.table)

@@ -44,6 +44,8 @@ dt <- data.table(
 cv_split_group_kfold(dt, "target", "user")
 
 cv_split_temporal(dt, "target", "user", "date")
+
+repeated_kfold(expr = quote(cv_base(as.data.table(iris), "Species")))
 ```
 
 
