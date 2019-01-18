@@ -117,7 +117,7 @@ cv_split_group_kfold <- function(data,
 
     data <- data[, .SD, .SDcols = cols]
     splits <- data[, .(target = mean(get(y))), by = id]
-    splits[, fold := create_folds(y = get(y), nfolds = nfolds, probs = probs)]
+    splits[, fold := create_folds(y = target, nfolds = nfolds, probs = probs)]
     splits <- splits[match(data[, get(id)], splits[, get(id)])]
 
     cn <- paste0("split_", seq_len(nfolds))
