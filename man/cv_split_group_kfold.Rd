@@ -2,7 +2,8 @@
 % Please edit documentation in R/k_fold.R
 \name{cv_split_group_kfold}
 \alias{cv_split_group_kfold}
-\title{Resamples for group K-fold cross-validation with stratification by target variable.}
+\title{Resamples for group K-fold cross-validation with stratification by mean
+value of target variable.}
 \usage{
 cv_split_group_kfold(data, y, id, nfolds = 5L, probs = seq(0, 1,
   length.out = 11))
@@ -12,18 +13,20 @@ cv_split_group_kfold(data, y, id, nfolds = 5L, probs = seq(0, 1,
 
 \item{y}{Target variable name (character).}
 
-\item{id}{Identifier of each time series (character).}
+\item{id}{Identifier of each group of observations (character).}
 
 \item{nfolds}{Number of folds (min 2, max 20).}
 
-\item{probs}{Numeric vector of probabilities with values in \emph{[0, 1]} range.}
+\item{probs}{Numeric vector of probabilities for quantile binning
+with values in \emph{[0, 1]} range.}
 }
 \value{
 data.table with \code{nfolds} columns. Each column is an indicator variable
 with 1 corresponds to observations in validation dataset (stratified by target).
 }
 \description{
-Resamples for group K-fold cross-validation with stratification by target variable.
+Resamples for group K-fold cross-validation with stratification by mean
+value of target variable.
 }
 \details{
 Numeric target: quantile binning is used for stratification.

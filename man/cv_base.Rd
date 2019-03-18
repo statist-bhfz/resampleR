@@ -13,7 +13,8 @@ cv_base(data, y, nfolds = 5L, probs = seq(0, 1, length.out = 11))
 
 \item{nfolds}{Number of folds (min 2, max 20).}
 
-\item{probs}{Numeric vector of probabilities with values in \emph{[0, 1]} range.}
+\item{probs}{Numeric vector of probabilities for quantile binning
+with values in \emph{[0, 1]} range.}
 }
 \value{
 data.table with \code{nfolds} columns. Each column is an indicator variable

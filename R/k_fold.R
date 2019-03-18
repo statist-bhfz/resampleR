@@ -36,7 +36,8 @@ create_folds <- function(y,
 #' @param data data.table with target variable.
 #' @param y Target variable name (character).
 #' @param nfolds Number of folds (min 2, max 20).
-#' @param probs Numeric vector of probabilities with values in \emph{[0, 1]} range.
+#' @param probs Numeric vector of probabilities for quantile binning
+#' with values in \emph{[0, 1]} range.
 #'
 #' @return data.table with \code{nfolds} columns. Each column is an indicator variable
 #' with 1 corresponds to observations in validation dataset (stratified by target).
@@ -76,13 +77,15 @@ cv_base <- function(data,
     return(splits[, ..cn])
 }
 
-#' Resamples for group K-fold cross-validation with stratification by target variable.
+#' Resamples for group K-fold cross-validation with stratification by mean
+#' value of target variable.
 #'
 #' @param data data.table with \code{y} and \code{id}.
 #' @param y Target variable name (character).
-#' @param id Identifier of each time series (character).
+#' @param id Identifier of each group of observations (character).
 #' @param nfolds Number of folds (min 2, max 20).
-#' @param probs Numeric vector of probabilities with values in \emph{[0, 1]} range.
+#' @param probs Numeric vector of probabilities for quantile binning
+#' with values in \emph{[0, 1]} range.
 #'
 #' @return data.table with \code{nfolds} columns. Each column is an indicator variable
 #' with 1 corresponds to observations in validation dataset (stratified by target).
@@ -141,8 +144,9 @@ cv_split_group_kfold <- function(data,
 #' @param id Identifier of each time series (character).
 #' @param time Time variable name (character).
 #' @param nfolds Number of folds (min 2, max 20).
-#' @param probs Numeric vector of probabilities with values in \emph{[0, 1]} range.
-
+#' @param probs Numeric vector of probabilities for quantile binning
+#' with values in \emph{[0, 1]} range.
+#'
 #' @return data.table with \code{nfolds} columns. Each column is an indicator variable
 #' with 1 corresponds to observations in validation dataset (stratified by target).
 #'
