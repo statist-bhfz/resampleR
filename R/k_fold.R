@@ -11,7 +11,7 @@ create_folds <- function(y,
 
     if (is.numeric(y)) {
         # Quantile binning
-        breaks <- unique(quantile(1:100, probs = probs))
+        breaks <- unique(quantile(y, probs = probs))
         y <- .bincode(y, breaks, include.lowest = TRUE)
     }
 
